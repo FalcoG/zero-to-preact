@@ -1,43 +1,43 @@
-var path = require('path');
+const path = require('path');
 
 module.exports = {
-	// entry file - starting point for the app
-	entry: './src',
+  // entry file - starting point for the app
+  entry: './src',
 
-	// where to dump the output of a production build
-	output: {
-		path: path.join(__dirname, 'build'),
-		filename: 'bundle.js'
-	},
+  // where to dump the output of a production build
+  output: {
+    path: path.join(__dirname, 'build'),
+    filename: 'bundle.js'
+  },
 
-	module: {
-		rules: [
-			{
-				test: /\.jsx?/i,
-				loader: 'babel-loader',
-				options: {
-					presets: [
-						'env'
-					],
-					plugins: [
-						['transform-react-jsx', { pragma: 'h' }]
-					]
-				}
-			}
-		]
-	},
-	
-	// enable Source Maps
-	devtool: 'source-map',
+  resolve: {
+    modules: ['src', 'lib', 'node_modules'],
+    alias: {
+      '@lib': path.resolve(process.cwd(), 'lib')
+    }
+  },
 
-	devServer: {
-		// serve up any static files from src/
-		contentBase: path.join(__dirname, 'src'),
+  module: {
+    rules: [
+      {
+        test: /\.js?/i,
+        include: [/src/, /lib/],
+        loader: 'babel-loader'
+      }
+    ]
+  },
 
-		// enable gzip compression:
-		compress: true,
+  // enable Source Maps
+  devtool: 'source-map',
 
-		// enable pushState() routing, as used by preact-router et al:
-		historyApiFallback: true
-	}
+  devServer: {
+    // serve up any static files from src/
+    contentBase: path.join(__dirname, 'src'),
+
+    // enable gzip compression:
+    compress: true,
+
+    // enable pushState() routing, as used by preact-router et al:
+    historyApiFallback: true
+  }
 };

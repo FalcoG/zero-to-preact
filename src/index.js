@@ -1,31 +1,19 @@
-// This is the entry file, which kicks off all rendering.
-//
-// We import h() here because that's the function our JSX elements transpile to.
-// That is to say - this:
-//     <div a="b">foo</div>
-// ... is converted to this:
-//     h('div', { a: 'b' }, 'foo')
-
 import { h, render } from 'preact';
 
-
-// this holds our rendered root element so we can re-render in response to HMR updates.
+// Make the root element global for HMR updates
 let root;
-
 
 // Making our app's initialization a function means it's repeatable.
 function init() {
 	// HMR requires that this be a require()
-	let App = require('./components/app').default;
+	const App = require('./components/app').default;
 
-	// render the app and save the new root element:
+	// Render the app and apply the new root element:
 	root = render(<App />, document.body, root);
 }
 
-
-// initial render!
+// Initial render
 init();
 
-
-// If this is webpack-dev-server, set up HMR :)
+// Enable HMR for webpack-dev-server
 if (module.hot) module.hot.accept('./components/app', init);
